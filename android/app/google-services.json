@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "223155326262",
+    "project_id": "vtsapp-d0b97",
+    "storage_bucket": "vtsapp-d0b97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223155326262:android:cf194382e0331e2732f797",
+        "android_client_info": {
+          "package_name": "com.example.voice_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223155326262-u3667dt2vsucss9lippuu5mavemfffv6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwKsf7-SWTmCOkE6LCdcK9yewnnKrWLhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223155326262-u3667dt2vsucss9lippuu5mavemfffv6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
