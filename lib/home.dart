@@ -324,8 +324,7 @@ class _HomepageState extends State<Homepage> {
             ),
             GestureDetector(
               onTap: () {
-                showDialog<void>(
-                    context: context, builder: (context) => dialog);
+                Navigator.pushNamed(context, '/qrcode');
               },
               child: Center(
                 child: Padding(
@@ -359,7 +358,7 @@ class _HomepageState extends State<Homepage> {
                           children: <Widget>[
                             Expanded(
                               child: Icon(
-                                Icons.assignment,
+                                Icons.camera_alt_outlined,
                                 color: Colors.white,
                                 size: 30.0,
                               ),
@@ -371,9 +370,9 @@ class _HomepageState extends State<Homepage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("$texts\'s Assignments",
+                                  Text("$texts\'s Scanner",
                                       style: TextStyle(
-                                        fontSize: 19.0,
+                                        fontSize: 19,
                                         color: Colors.white,
                                         fontWeight: FontWeight.w900,
                                       )),
@@ -383,7 +382,7 @@ class _HomepageState extends State<Homepage> {
                                   Container(
                                     width: 150.0,
                                     child: Text(
-                                        "Be sure to turn in your assignments on time",
+                                        "Scan all products with Qrcode and also generate your Qrcode",
                                         style: TextStyle(
                                           fontSize: 12.0,
                                           color: Colors.white,

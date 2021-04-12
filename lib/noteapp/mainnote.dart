@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:quiver/iterables.dart';
-
 import 'screens/work.dart';
 import 'screens/personal.dart';
 import 'screens/school.dart';
 import 'screens/newNote.dart';
-// import 'package:like_button/like_button.dart';
-
-// void main() => runApp(MaterialApp(
-//       home: NoteApp(),
-//     ));
 
 class NoteApp extends StatelessWidget {
   final work = 'Work';
