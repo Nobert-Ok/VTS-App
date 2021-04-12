@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+// import 'package:voice_app/noteapp/new.dart';
 
 // void main() => runApp(MaterialApp(
 //       home: NewNote(),
@@ -36,10 +40,8 @@ class NewNote extends StatelessWidget {
             //     ),
             //     onPressed: () {}),
             TextButton(
-                onPressed: () {
-                  showDialog<void>(
-                      context: context, builder: (context) => dialog);
-                },
+                onPressed: addNote,
+                // onPressed: addNote,
                 child: Text(
                   'SAVE',
                   style: TextStyle(
@@ -52,6 +54,8 @@ class NewNote extends StatelessWidget {
       ),
     );
   }
+
+  void addNote() {}
 }
 
 class MyStatefulWidget extends StatefulWidget {
@@ -60,6 +64,8 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String title;
+  String desc;
   final _formKey = GlobalKey<FormState>();
   // @overiide
   Widget build(BuildContext context) {
@@ -85,25 +91,55 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   }
                   return null;
                 },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  hintText: 'Enter note here',
-                  border: InputBorder.none,
-                ),
-                minLines: 10,
-                maxLines: 50,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'This field is required';
-                  }
-                  return null;
+                onChanged: (_val) {
+                  title = _val;
                 },
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.75,
+                padding: const EdgeInsets.only(top: 12.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    hintText: 'Enter note here',
+                    border: InputBorder.none,
+                  ),
+                  minLines: 10,
+                  maxLines: 50,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'This field is required';
+                    }
+                    return null;
+                  },
+                  onChanged: (_val) {
+                    desc = _val;
+                  },
+                ),
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  void addNote() async {
+    // adding user notes into database
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('Personalnotes');
+
+    var data = {
+      'title': title,
+      'description': desc,
+      'created': DateTime.now(),
+    };
+
+    ref.add(data);
+
+    //
+
+    Navigator.pop(context);
   }
 }

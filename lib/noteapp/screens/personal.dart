@@ -1,46 +1,49 @@
 import 'package:flutter/material.dart';
 import 'newNote.dart';
-// import 'package:overflown/work.dart';
-// import 'package:like_button/like_button.dart';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
+import 'newNote.dart';
+import 'viewNote.dart';
 
-// void main() => runApp(MaterialApp(
-//       home: PersonalScreen(),
-//     ));
+class PersonalScreen extends StatefulWidget {
+  @override
+  _PersonalScreen createState() => _PersonalScreen();
+}
 
-class PersonalScreen extends StatelessWidget {
-  final List<String> titles2 = [
-    'Dreams can become reality',
-    'Getting over life',
-    'orange became my best fruit',
-    'Dreams can become reality',
-    'Getting over life',
-    'orange became my best fruit'
-  ];
-
-  final List<String> maintext2 = [
-    'The field notes were written by hand on lined paper. They consisted of jotted notes and mental triggers (personal notes that would remind me of specific things when it came to writing the notes up). I took some direct observational notes recording what I saw where this was relevant to the research questions and, as I was aiming to get a sense of the culture and working environment, I also made researcher inference notes ',
-    'I found the note-taking process itself helpful, as it ensured that I listened carefully and decoded information. Not all the information I recorded was relevant but noting what I found informative contributed to my ability to form an overview on re-reading. However, the reliability of jotted notes alone can be questionable. For example, the notes were not a direct transcription of what the subjects said but consisted of pertinent or interesting information.',
-    'A tape recorder would have been a better, more accurate method. However, one student brought a tape recorder and was asked to switch it off by a participant who was uneasy about her comments being directly recorded. It seems that subjects feel differently about being recorded or photographed (as opposed to observers taking notes), so specific consent should be sought before using these technologies',
-    'The field notes were written by hand on lined paper. They consisted of jotted notes and mental triggers (personal notes that would remind me of specific things when it came to writing the notes up). I took some direct observational notes recording what I saw where this was relevant to the research questions and, as I was aiming to get a sense of the culture and working environment, I also made researcher inference notes ',
-    'I found the note-taking process itself helpful, as it ensured that I listened carefully and decoded information. Not all the information I recorded was relevant but noting what I found informative contributed to my ability to form an overview on re-reading. However, the reliability of jotted notes alone can be questionable. For example, the notes were not a direct transcription of what the subjects said but consisted of pertinent or interesting information.',
-    'A tape recorder would have been a better, more accurate method. However, one student brought a tape recorder and was asked to switch it off by a participant who was uneasy about her comments being directly recorded. It seems that subjects feel differently about being recorded or photographed (as opposed to observers taking notes), so specific consent should be sought before using these technologies'
+class _PersonalScreen extends State<PersonalScreen> {
+  CollectionReference ref = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser.uid)
+      .collection('notes');
+  List<Color> myColors = [
+    Colors.yellow[200],
+    Colors.red[200],
+    Colors.green[200],
+    Colors.deepPurple[200],
   ];
 
   @override
   Widget build(BuildContext context) {
-    final AlertDialog dialog = AlertDialog(
-      content: Text('This page is still under development'),
-      actions: [
-        FlatButton(
-          textColor: Colors.blueAccent,
-          onPressed: () => Navigator.pop(context),
-          child: Text('OKAY'),
-        ),
-      ],
-    );
     return MaterialApp(
       title: 'Speech to text App',
       home: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              new MaterialPageRoute(
+                builder: (context) => NewNote(),
+              ),
+            ).then((value) {
+              print("Calling Set  State !");
+              setState(() {});
+            });
+          },
+          child: Icon(Icons.add),
+        ),
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -72,227 +75,127 @@ class PersonalScreen extends StatelessWidget {
           //   ),
           // ],
         ),
-        body: Container(
-            padding: EdgeInsets.all(10.0),
-            child: GridView.builder(
-              itemCount: titles2.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0),
-              itemBuilder: (BuildContext context, int index) {
+        body: FutureBuilder<QuerySnapshot>(
+            future: ref.get(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
                 return Container(
-                    width: 200,
-                    // height: 400,
-                    // padding: EdgeInsets.all(10),
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Card(
-                      color: Colors.white,
-                      elevation: 5.0,
-                      child: InkWell(
-                        child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: Column(children: [
-                              Text(
-                                titles2[index],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15.0,
-                                ),
-                              ),
-                              Flexible(
-                                child: Text(
-                                  maintext2[index],
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 7,
-                                  softWrap: true,
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 25,
-                                    width: 50,
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: Colors.blueAccent),
-                                      borderRadius: BorderRadius.circular(50),
+                  padding: EdgeInsets.all(10.0),
+                  child: GridView.builder(
+                    itemCount: snapshot.data.docs.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 4.0,
+                        mainAxisSpacing: 4.0),
+                    itemBuilder: (BuildContext context, int index) {
+                      Random random = new Random();
+                      Color bg = myColors[random.nextInt(4)];
+                      Map data = snapshot.data.docs[index].data();
+                      DateTime mydateTime = data['created'].toDate();
+                      String formattedTime =
+                          DateFormat.yMMMd().add_jm().format(mydateTime);
+                      return Container(
+                          width: 200,
+                          // height: 400,
+                          // padding: EdgeInsets.all(10),
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5.0,
+                            child: InkWell(
+                              child: Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: Column(children: [
+                                    Text(
+                                      "${data['title']}",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15.0,
+                                      ),
                                     ),
-                                    // decoration: ShapeDecoration(
-                                    //   shape: RoundedRectangleBorder(
-                                    //     borderRadius: BorderRadius.circular(50),
-                                    //   ),
-                                    // ),
-                                    child: Center(child: Text('Personal.')),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete,
-                                      color: Colors.blueAccent,
+                                    Flexible(
+                                      child: Text(
+                                        "${data['desc']}",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 7,
+                                        softWrap: true,
+                                      ),
                                     ),
-                                    onPressed: () {
-                                      showDialog<void>(
-                                          context: context,
-                                          builder: (context) => dialog);
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: Colors.blueAccent,
+                                    Row(
+                                      children: [
+                                        Container(
+                                          height: 25,
+                                          width: 50,
+                                          padding: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueAccent),
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          // decoration: ShapeDecoration(
+                                          //   shape: RoundedRectangleBorder(
+                                          //     borderRadius: BorderRadius.circular(50),
+                                          //   ),
+                                          // ),
+                                          child:
+                                              Center(child: Text('Personal.')),
+                                        ),
+                                        // IconButton(
+                                        //   icon: Icon(
+                                        //     Icons.delete,
+                                        //     color: Colors.blueAccent,
+                                        //   ),
+                                        //   onPressed: () {
+                                        //     showDialog<void>(
+                                        //         context: context,
+                                        //         builder: (context) => dialog);
+                                        //   },
+                                        // ),
+                                        // IconButton(
+                                        //   icon: Icon(
+                                        //     Icons.edit,
+                                        //     color: Colors.blueAccent,
+                                        //   ),
+                                        //   onPressed: () {
+                                        //     showDialog<void>(
+                                        //         context: context,
+                                        //         builder: (context) => dialog);
+                                        //   },
+                                        // ),
+                                        // LikeButton(),
+                                      ],
                                     ),
-                                    onPressed: () {
-                                      showDialog<void>(
-                                          context: context,
-                                          builder: (context) => dialog);
-                                    },
-                                  ),
-                                  // LikeButton(),
-                                ],
-                              ),
-                            ])),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    FullScreenDialogue(
-                                        titles2[index], maintext2[index]),
-                                fullscreenDialog: true,
-                              ));
-                        },
-                      ),
-                    ));
+                                  ])),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          FullScreenDialogue(
+                                        "${data['title']}",
+                                        "${data['desc']}",
+                                      ),
+                                      fullscreenDialog: true,
+                                    ));
+                              },
+                            ),
+                          ));
 
-                // Image.network(images[index]);
-              },
-            )),
-        // drawer: Drawer(
-        //   child: ListView(
-        //     padding: EdgeInsets.zero,
-        //     children: [
-        //       DrawerHeader(
-        //         child: Center(
-        //             child: Column(
-        //           children: [
-        //             CircleAvatar(
-        //               backgroundImage: AssetImage('images/profile.png'),
-        //               radius: 40.0,
-        //             ),
-        //             SizedBox(height: 5.0),
-        //             Text('Neba Roland Ngwa',
-        //                 style: TextStyle(
-        //                   color: Colors.white,
-        //                 )),
-        //             SizedBox(height: 5.0),
-        //             Text('n.ngwa@alustudent.com',
-        //                 style: TextStyle(
-        //                   color: Colors.white,
-        //                 )),
-        //           ],
-        //         )),
-        //         decoration: BoxDecoration(
-        //           color: Colors.blue,
-        //         ),
-        //       ),
-        //       ListTile(
-        //         leading: Icon(
-        //           Icons.home,
-        //           color: Colors.blueAccent,
-        //         ),
-        //         title: Text('Home'),
-        //         onTap: () {
-        //           //
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: Icon(
-        //           Icons.person,
-        //           color: Colors.blueAccent,
-        //         ),
-        //         title: Text('Profile'),
-        //         onTap: () {
-        //           //
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: Icon(
-        //           Icons.category,
-        //           color: Colors.blueAccent,
-        //         ),
-        //         title: Text('Note Tag'),
-        //         onTap: () {
-        //           //
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: Icon(
-        //           Icons.settings,
-        //           color: Colors.blueAccent,
-        //         ),
-        //         title: Text('Settings'),
-        //         onTap: () {
-        //           //
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: Icon(
-        //           Icons.logout,
-        //           color: Colors.blueAccent,
-        //         ),
-        //         title: Text('Log out'),
-        //         onTap: () {
-        //           //
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   backgroundColor: Colors.blue,
-        //   type: BottomNavigationBarType.fixed,
-        //   selectedItemColor: Colors.white,
-        //   unselectedItemColor: Colors.white,
-        //   items: [
-        //     BottomNavigationBarItem(
-        //       icon: Icon(
-        //         Icons.home,
-        //         color: Colors.white,
-        //       ),
-        //       label: 'Home',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(
-        //         Icons.book,
-        //         color: Colors.white,
-        //       ),
-        //       label: 'NoteBook',
-        //     ),
-        //     BottomNavigationBarItem(
-        //         icon: Icon(
-        //           Icons.check,
-        //           color: Colors.white,
-        //         ),
-        //         label: 'To Do'),
-        //   ],
-        // ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => NewNote()));
-          },
-          child: Icon(Icons.add),
-        ),
+                      // Image.network(images[index]);
+                    },
+                  ),
+                );
+              } else {
+                return Center(
+                  child: Text("Loading..."),
+                );
+              }
+            }),
       ),
     );
   }
