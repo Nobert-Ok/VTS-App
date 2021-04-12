@@ -175,13 +175,12 @@ class _PersonalScreen extends State<PersonalScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          FullScreenDialogue(
-                                        "${data['title']}",
-                                        "${data['desc']}",
-                                      ),
-                                      fullscreenDialog: true,
-                                    ));
+                                        builder: (BuildContext context) =>
+                                            ViewScreen(
+                                                data,
+                                                formattedTime,
+                                                snapshot.data.docs[index]
+                                                    .reference)));
                               },
                             ),
                           ));
