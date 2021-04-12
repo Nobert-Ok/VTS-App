@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl.dart';
-import 'newNote.dart';
+// import 'newNote.dart';
 import 'viewNote.dart';
 
 class PersonalScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _PersonalScreen extends State<PersonalScreen> {
   CollectionReference ref = FirebaseFirestore.instance
       .collection('users')
       .doc(FirebaseAuth.instance.currentUser.uid)
-      .collection('notes');
+      .collection('Personalnotes');
   List<Color> myColors = [
     Colors.yellow[200],
     Colors.red[200],
