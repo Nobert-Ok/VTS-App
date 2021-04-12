@@ -104,7 +104,7 @@ class _PersonalScreen extends State<PersonalScreen> {
                             ),
                           ),
                           child: Card(
-                            color: Colors.white,
+                            color: bg,
                             elevation: 5.0,
                             child: InkWell(
                               child: Padding(
