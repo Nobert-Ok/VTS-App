@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voice_app/model/database.dart';
+import 'package:voice_app/qrcode/main.dart';
 import 'noteapp/mainnote.dart';
 import 'signup.dart';
 import 'login.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
             '/home': (BuildContext context) => new Homepage(),
             '/todo': (BuildContext context) => new Todolist(),
             '/note': (BuildContext context) => new NoteApp(),
-            // '/signup': (BuildContext context) => new SignupPage()
+            '/qrcode': (BuildContext context) => new Qrcode(),
             // '/signup': (BuildContext context) => new SignupPage()
           },
           theme:

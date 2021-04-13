@@ -55,25 +55,6 @@ class _PersonalScreen extends State<PersonalScreen> {
               style: TextStyle(
                 color: Colors.white,
               )),
-          // actions: [
-          //   IconButton(
-          //       icon: Icon(
-          //         Icons.search,
-          //         color: Colors.white,
-          //       ),
-          //       onPressed: () {
-          //         //
-          //       }),
-          //   IconButton(
-          //     icon: Icon(
-          //       Icons.notifications,
-          //       color: Colors.white,
-          //     ),
-          //     onPressed: () {
-          //       //
-          //     },
-          //   ),
-          // ],
         ),
         body: FutureBuilder<QuerySnapshot>(
             future: ref.get(),
@@ -119,7 +100,7 @@ class _PersonalScreen extends State<PersonalScreen> {
                                     ),
                                     Flexible(
                                       child: Text(
-                                        "${data['desc']}",
+                                        "${data['description']}",
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 7,
                                         softWrap: true,
