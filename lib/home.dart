@@ -69,6 +69,7 @@ class _HomepageState extends State<Homepage> {
           ),
           elevation: 4.0,
           // leading: Container(),
+          actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
         ),
         drawer: Drawer(
           child: ListView(

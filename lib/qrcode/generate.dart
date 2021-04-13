@@ -10,11 +10,12 @@ class GeneratePage extends StatefulWidget {
 
 class GeneratePageState extends State<GeneratePage> {
   String qrData =
-      "https://www.google.com/";  // already generated qr code when the page opens
+      "https://www.google.com/"; // already generated qr code when the page opens
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('QR Code Generator'),
         actions: <Widget>[],
@@ -57,7 +58,6 @@ class GeneratePageState extends State<GeneratePage> {
                       qrData = qrdataFeed.text;
                     });
                   }
-
                 },
                 child: Text(
                   "Generate QR",
