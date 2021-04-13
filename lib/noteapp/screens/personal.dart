@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'newNote.dart';
+import 'newPersonalNote.dart';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -106,11 +106,12 @@ class _PersonalScreen extends State<PersonalScreen> {
                                         softWrap: true,
                                       ),
                                     ),
+                                    Spacer(),
                                     Row(
                                       children: [
                                         Container(
                                           height: 25,
-                                          width: 50,
+                                          width: 80,
                                           padding: EdgeInsets.all(5),
                                           decoration: BoxDecoration(
                                             border: Border.all(

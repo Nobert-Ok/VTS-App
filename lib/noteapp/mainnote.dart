@@ -1,164 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/iterables.dart';
+import 'package:voice_app/noteapp/screens/viewNote.dart';
 import 'screens/work.dart';
 import 'screens/personal.dart';
 import 'screens/school.dart';
-import 'screens/newNote.dart';
+import 'screens/newPersonalNote.dart';
+import 'screens/newSchoolNote.dart';
+import 'screens/newWorkNote.dart';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/intl.dart';
 
-class NoteApp extends StatelessWidget {
-  final work = 'Work';
-  final personal = 'Personal';
-  final school = 'School';
-  final List<String> titles1 = [
-    'Dreams can become reality',
-    'Getting over life',
-    'orange became my best fruit'
-  ];
-  final List<String> titles2 = [
-    'Meeting the new facilitator',
-    'My day at School today',
-    'Meeting new people at School'
-  ];
-  final List<String> titles3 = [
-    'Having a hectic day at work',
-    'Convincing my boss about a task',
-    'Getting to know my fellow employees'
-  ];
+class NoteApp extends StatefulWidget {
+  @override
+  _NoteApp createState() => _NoteApp();
+}
 
-  final List<String> maintext1 = [
-    'The field notes were written by hand on lined paper. They consisted of jotted notes and mental triggers (personal notes that would remind me of specific things when it came to writing the notes up). I took some direct observational notes recording what I saw where this was relevant to the research questions and, as I was aiming to get a sense of the culture and working environment, I also made researcher inference notes ',
-    'I found the note-taking process itself helpful, as it ensured that I listened carefully and decoded information. Not all the information I recorded was relevant but noting what I found informative contributed to my ability to form an overview on re-reading. However, the reliability of jotted notes alone can be questionable. For example, the notes were not a direct transcription of what the subjects said but consisted of pertinent or interesting information.',
-    'A tape recorder would have been a better, more accurate method. However, one student brought a tape recorder and was asked to switch it off by a participant who was uneasy about her comments being directly recorded. It seems that subjects feel differently about being recorded or photographed (as opposed to observers taking notes), so specific consent should be sought before using these technologies'
-  ];
-  final List<String> maintext2 = [
-    'Question: Discuss at least two things you learnt or discovered – for example about design or working in groups or the physical world – through participating in the Impromptu Design activities.',
-    'I learned that good teamwork is the key to success in design activities when time and resources are limited. As everyone had their own point of view, many different ideas could be produced, and I found the energy of group participation made me feel more energetic about contributing something',
-    'I learned that every design has its weaknesses and strengths and working with a group can help discover what they are. We challenged each other"s preconceptions about what would and would not work. We could also see the reality of the way changing a design actually affected its performance.'
-  ];
-  final List<String> maintext3 = [
-    'The two inventors (an odd name considering that, as Smith (2002) says, nobody thinks of things in a vacuum) were accompanied by their marketing people. The conversations were quite contrived, but also funny and enlightening. I realised that the marketing people used a certain form of evidence to persuade the viewers (us?) of the value of the inventions',
-    'To them, this value was determined solely by whether something could be bought or sold—in other words, whether something was marketable. In contrast, the inventors seemed quite shy and reluctant to use anything more than technical language, almost as if this was the only evidence required – as if no further explanation was needed',
-    'This difference forced me to reflect on the aims of this course—how communication skills are not generic but differ according to time and place. Like in the "Research Methodology" textbook discussed in the first lecture, these communication skills are the result of a form of triangulation,  '
-  ];
-
-  Widget method1(BuildContext context, List<String> titles,
-      List<String> maintext, String categorry) {
+class _NoteApp extends State<NoteApp> {
+  @override
+  Widget build(BuildContext context) {
+    CollectionReference ref = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('Worknotes');
+    CollectionReference school = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('Schoolnotes');
+    CollectionReference personal = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('Personalnotes');
+    List<Color> myColors = [
+      Colors.yellow[200],
+      Colors.red[200],
+      Colors.green[200],
+      Colors.deepPurple[200],
+    ];
     final AlertDialog dialog = AlertDialog(
-      content: Text('This page is still under development'),
+      content:
+          Text('Please pick which category you want to write your note in'),
       actions: [
         FlatButton(
           textColor: Colors.blueAccent,
-          onPressed: () => Navigator.pop(context),
-          child: Text('OKAY'),
+          onPressed: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => NewWorkNote()));
+          },
+          child: Text('Work'),
+        ),
+        FlatButton(
+          textColor: Colors.blueAccent,
+          onPressed: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => NewSchoolNote()));
+          },
+          child: Text('School'),
+        ),
+        FlatButton(
+          textColor: Colors.blueAccent,
+          onPressed: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => NewNote()));
+          },
+          child: Text('Personal'),
         ),
       ],
     );
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 100,
-      ),
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20.0),
-        height: 200,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            for (var item in zip([titles, maintext]))
-              Container(
-                width: 200,
-                // height: 250,
-                // padding: EdgeInsets.all(10),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: Card(
-                  color: Colors.white,
-                  elevation: 5.0,
-                  child: InkWell(
-                    child: Padding(
-                        padding: EdgeInsets.all(5),
-                        child: Column(children: [
-                          Text(
-                            item[0],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
-                            ),
-                          ),
-                          Flexible(
-                            child: Text(
-                              item[1],
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 7,
-                              softWrap: true,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                height: 25,
-                                width: 50,
-                                padding: EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blueAccent),
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                // decoration: ShapeDecoration(
-                                //   shape: RoundedRectangleBorder(
-                                //     borderRadius: BorderRadius.circular(50),
-                                //   ),
-                                // ),
-                                child: Text(categorry),
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.delete,
-                                  color: Colors.blueAccent,
-                                ),
-                                onPressed: () {
-                                  showDialog<void>(
-                                      context: context,
-                                      builder: (context) => dialog);
-                                },
-                              ),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.edit,
-                                  color: Colors.blueAccent,
-                                ),
-                                onPressed: () {
-                                  showDialog<void>(
-                                      context: context,
-                                      builder: (context) => dialog);
-                                },
-                              ),
-                              // LikeButton(),
-                            ],
-                          )
-                        ])),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                FullScreenDialogue(item[0], item[1]),
-                            fullscreenDialog: true,
-                          ));
-                    },
-                  ),
-                ),
-              )
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Speech to text App',
       home: Scaffold(
@@ -224,7 +134,131 @@ class NoteApp extends StatelessWidget {
                       })
                 ],
               ),
-              method1(context, titles3, maintext3, work),
+              FutureBuilder<QuerySnapshot>(
+                  future: ref.get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 100,
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Map data = snapshot.data.docs[index].data();
+                              DateTime mydateTime = data['created'].toDate();
+                              String formattedTime = DateFormat.yMMMd()
+                                  .add_jm()
+                                  .format(mydateTime);
+
+                              return Container(
+                                width: 200,
+                                // height: 250,
+                                // padding: EdgeInsets.all(10),
+                                decoration: ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 5.0,
+                                  child: InkWell(
+                                    child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(children: [
+                                          Text(
+                                            "${data['title']}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text(
+                                              "${data['description']}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 7,
+                                              softWrap: true,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 25,
+                                                width: 50,
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.blueAccent),
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                // decoration: ShapeDecoration(
+                                                //   shape: RoundedRectangleBorder(
+                                                //     borderRadius: BorderRadius.circular(50),
+                                                //   ),
+                                                // ),
+                                                child: Text("Work"),
+                                              ),
+                                              // IconButton(
+                                              //   icon: Icon(
+                                              //     Icons.delete,
+                                              //     color: Colors.blueAccent,
+                                              //   ),
+                                              //   onPressed: () {
+                                              //     showDialog<void>(
+                                              //         context: context,
+                                              //         builder: (context) =>
+                                              //             dialog);
+                                              //   },
+                                              // ),
+
+                                              // IconButton(
+                                              //   icon: Icon(
+                                              //     Icons.edit,
+                                              //     color: Colors.blueAccent,
+                                              //   ),
+                                              //   onPressed: () {
+                                              //     showDialog<void>(
+                                              //         context: context,
+                                              //         builder: (context) =>
+                                              //             dialog);
+                                              //   },
+                                              // ),
+                                              // LikeButton(),
+                                            ],
+                                          )
+                                        ])),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ViewScreen(
+                                                    data,
+                                                    formattedTime,
+                                                    snapshot.data.docs[index]
+                                                        .reference),
+                                          ));
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Text("Loading..."),
+                      );
+                    }
+                  }),
               Row(
                 children: [
                   Text(
@@ -249,7 +283,131 @@ class NoteApp extends StatelessWidget {
                       })
                 ],
               ),
-              method1(context, titles1, maintext1, personal),
+              FutureBuilder<QuerySnapshot>(
+                  future: personal.get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 100,
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Map data = snapshot.data.docs[index].data();
+                              DateTime mydateTime = data['created'].toDate();
+                              String formattedTime = DateFormat.yMMMd()
+                                  .add_jm()
+                                  .format(mydateTime);
+
+                              return Container(
+                                width: 200,
+                                // height: 250,
+                                // padding: EdgeInsets.all(10),
+                                decoration: ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 5.0,
+                                  child: InkWell(
+                                    child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(children: [
+                                          Text(
+                                            "${data['title']}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text(
+                                              "${data['description']}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 7,
+                                              softWrap: true,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 25,
+                                                width: 50,
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.blueAccent),
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                // decoration: ShapeDecoration(
+                                                //   shape: RoundedRectangleBorder(
+                                                //     borderRadius: BorderRadius.circular(50),
+                                                //   ),
+                                                // ),
+                                                child: Text("Personal"),
+                                              ),
+                                              // IconButton(
+                                              //   icon: Icon(
+                                              //     Icons.delete,
+                                              //     color: Colors.blueAccent,
+                                              //   ),
+                                              //   onPressed: () {
+                                              //     showDialog<void>(
+                                              //         context: context,
+                                              //         builder: (context) =>
+                                              //             dialog);
+                                              //   },
+                                              // ),
+
+                                              // IconButton(
+                                              //   icon: Icon(
+                                              //     Icons.edit,
+                                              //     color: Colors.blueAccent,
+                                              //   ),
+                                              //   onPressed: () {
+                                              //     showDialog<void>(
+                                              //         context: context,
+                                              //         builder: (context) =>
+                                              //             dialog);
+                                              //   },
+                                              // ),
+                                              // LikeButton(),
+                                            ],
+                                          )
+                                        ])),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ViewScreen(
+                                                    data,
+                                                    formattedTime,
+                                                    snapshot.data.docs[index]
+                                                        .reference),
+                                          ));
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Text("Loading..."),
+                      );
+                    }
+                  }),
               Row(
                 children: [
                   Text(
@@ -274,7 +432,131 @@ class NoteApp extends StatelessWidget {
                       }),
                 ],
               ),
-              method1(context, titles2, maintext2, school),
+              FutureBuilder<QuerySnapshot>(
+                  future: school.get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: 100,
+                        ),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 20.0),
+                          height: 200,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Map data = snapshot.data.docs[index].data();
+                              DateTime mydateTime = data['created'].toDate();
+                              String formattedTime = DateFormat.yMMMd()
+                                  .add_jm()
+                                  .format(mydateTime);
+
+                              return Container(
+                                width: 200,
+                                // height: 250,
+                                // padding: EdgeInsets.all(10),
+                                decoration: ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 5.0,
+                                  child: InkWell(
+                                    child: Padding(
+                                        padding: EdgeInsets.all(5),
+                                        child: Column(children: [
+                                          Text(
+                                            "${data['title']}",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15.0,
+                                            ),
+                                          ),
+                                          Flexible(
+                                            child: Text(
+                                              "${data['description']}",
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 7,
+                                              softWrap: true,
+                                            ),
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 25,
+                                                width: 50,
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.blueAccent),
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                // decoration: ShapeDecoration(
+                                                //   shape: RoundedRectangleBorder(
+                                                //     borderRadius: BorderRadius.circular(50),
+                                                //   ),
+                                                // ),
+                                                child: Text("School"),
+                                              ),
+                                              // IconButton(
+                                              //   icon: Icon(
+                                              //     Icons.delete,
+                                              //     color: Colors.blueAccent,
+                                              //   ),
+                                              //   onPressed: () {
+                                              //     showDialog<void>(
+                                              //         context: context,
+                                              //         builder: (context) =>
+                                              //             dialog);
+                                              //   },
+                                              // ),
+
+                                              // IconButton(
+                                              //   icon: Icon(
+                                              //     Icons.edit,
+                                              //     color: Colors.blueAccent,
+                                              //   ),
+                                              //   onPressed: () {
+                                              //     showDialog<void>(
+                                              //         context: context,
+                                              //         builder: (context) =>
+                                              //             dialog);
+                                              //   },
+                                              // ),
+                                              // LikeButton(),
+                                            ],
+                                          )
+                                        ])),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ViewScreen(
+                                                    data,
+                                                    formattedTime,
+                                                    snapshot.data.docs[index]
+                                                        .reference),
+                                          ));
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Text("Loading..."),
+                      );
+                    }
+                  }),
             ],
           ),
         )),
@@ -394,64 +676,14 @@ class NoteApp extends StatelessWidget {
         // ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => NewNote()));
+            showDialog<void>(context: context, builder: (context) => dialog)
+                .then((value) {
+              print("Calling Set  State !");
+              setState(() {});
+            });
           },
           // tooltip: 'Increment',
           child: Icon(Icons.add),
-        ),
-      ),
-    );
-  }
-}
-
-class FullScreenDialogue extends StatelessWidget {
-  FullScreenDialogue(this.titleD, this.tbody);
-  // FullScreenDialogue(this.tbody);
-  final String tbody;
-  final String titleD;
-  @override
-  Widget build(BuildContext context) {
-    final AlertDialog dialog = AlertDialog(
-      content: Text('This page is still under development'),
-      actions: [
-        FlatButton(
-          textColor: Colors.blueAccent,
-          onPressed: () => Navigator.pop(context),
-          child: Text('OKAY'),
-        ),
-      ],
-    );
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text(
-          titleD,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          IconButton(
-              icon: Icon(
-                Icons.edit,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                showDialog<void>(
-                    context: context, builder: (context) => dialog);
-              }),
-        ],
-      ),
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Text(
-            tbody,
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
         ),
       ),
     );
