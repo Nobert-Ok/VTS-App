@@ -4,8 +4,6 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/intl.dart';
-// import 'newNote.dart';
 import 'viewNote.dart';
 
 class PersonalScreen extends StatefulWidget {
@@ -28,7 +26,6 @@ class _PersonalScreen extends State<PersonalScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Speech to text App',
       home: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -106,12 +103,11 @@ class _PersonalScreen extends State<PersonalScreen> {
                                         softWrap: true,
                                       ),
                                     ),
-                                    Spacer(),
                                     Row(
                                       children: [
                                         Container(
                                           height: 25,
-                                          width: 80,
+                                          width: 50,
                                           padding: EdgeInsets.all(5),
                                           decoration: BoxDecoration(
                                             border: Border.all(

@@ -402,8 +402,7 @@ class _HomepageState extends State<Homepage> {
             ),
             GestureDetector(
               onTap: () {
-                showDialog<void>(
-                    context: context, builder: (context) => dialog);
+                Navigator.pushNamed(context, '/timer');
               },
               child: Center(
                 child: Padding(
@@ -437,7 +436,7 @@ class _HomepageState extends State<Homepage> {
                           children: <Widget>[
                             Expanded(
                               child: Icon(
-                                Icons.note,
+                                Icons.timer,
                                 color: Colors.white,
                                 size: 30.0,
                               ),
@@ -449,7 +448,7 @@ class _HomepageState extends State<Homepage> {
                                 mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Lucy's ......",
+                                  Text("$texts\'s Timer ",
                                       style: TextStyle(
                                         fontSize: 19.0,
                                         color: Colors.white,
@@ -461,7 +460,7 @@ class _HomepageState extends State<Homepage> {
                                   Container(
                                     width: 150.0,
                                     child: Text(
-                                        "Here you can take notes and visit them at your convenient",
+                                        "This is a pamodoro timer which you can use to time your studies for 25 minutes",
                                         style: TextStyle(
                                           fontSize: 12.0,
                                           color: Colors.white,

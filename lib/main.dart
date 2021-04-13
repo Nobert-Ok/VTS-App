@@ -8,7 +8,7 @@ import 'signup.dart';
 import 'login.dart';
 import 'home.dart';
 import 'todo.dart';
-// import 'noteapp/mainnote.dart';
+import 'timer/main.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             '/todo': (BuildContext context) => new Todolist(),
             '/note': (BuildContext context) => new NoteApp(),
             '/qrcode': (BuildContext context) => new Qrcode(),
-            // '/signup': (BuildContext context) => new SignupPage()
+            '/timer': (BuildContext context) => new BaseApp()
           },
           theme:
               ThemeData(primarySwatch: Colors.blue, fontFamily: "Montserrat"),
