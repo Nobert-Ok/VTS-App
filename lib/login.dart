@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voice_app/home.dart';
 import 'package:voice_app/net/flutterfire.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:voice_app/signup.dart';
 
 class Login extends StatelessWidget {
   @override
@@ -85,25 +86,25 @@ class _MyHomePageState extends State<MyHomePage> {
                               borderSide: BorderSide(color: Colors.blue))),
                       obscureText: true,
                     ),
-                    SizedBox(height: 5.0),
-                    GestureDetector(
-                      onTap: () {
-                        showDialog<void>(
-                            context: context, builder: (context) => dialog);
-                      },
-                      child: Container(
-                        alignment: Alignment(1.0, 0.0),
-                        padding: EdgeInsets.only(top: 15.0, left: 20.0),
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat',
-                              decoration: TextDecoration.underline),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(height: 5.0),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     showDialog<void>(
+                    //         context: context, builder: (context) => dialog);
+                    //   },
+                    //   child: Container(
+                    //     alignment: Alignment(1.0, 0.0),
+                    //     padding: EdgeInsets.only(top: 15.0, left: 20.0),
+                    //     child: Text(
+                    //       'Forgot Password?',
+                    //       style: TextStyle(
+                    //           color: Colors.blue,
+                    //           fontWeight: FontWeight.bold,
+                    //           fontFamily: 'Montserrat',
+                    //           decoration: TextDecoration.underline),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 40.0),
                     Container(
                       height: 40.0,
@@ -166,7 +167,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 SizedBox(width: 5.0),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pushNamed('/signup');
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => SignupPage()));
                   },
                   child: Text(
                     'Register',

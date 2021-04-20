@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:voice_app/custompainter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'login.dart';
+
 String convertToTitleCase(String text) {
   if (text == null) {
     return null;
@@ -69,7 +71,15 @@ class _HomepageState extends State<Homepage> {
           ),
           elevation: 4.0,
           // leading: Container(),
-          actions: [IconButton(icon: Icon(Icons.logout), onPressed: () {})],
+          actions: [
+            IconButton(
+                icon: Icon(Icons.logout),
+                onPressed: () {
+                  auth.signOut();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Login()));
+                })
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -87,83 +97,17 @@ class _HomepageState extends State<Homepage> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, "/home");
-                },
-                child: ListTile(
-                  title: Text("Home"),
-                  leading: Icon(Icons.home, color: Colors.blue),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  return AlertDialog(
-                    content: Text("Page is under development"),
-                    actions: [
-                      FlatButton(
-                        textColor: Colors.blueAccent,
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('OKAY'),
-                      ),
-                    ],
-                  );
-                },
-                child: ListTile(
-                  title: Text("My Account"),
-                  leading: Icon(Icons.person, color: Colors.blue),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, "/login");
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Login()));
                 },
                 child: ListTile(
                     title: Text("Log out"),
                     leading: Icon(Icons.logout, color: Colors.blue)),
               ),
               Divider(),
-              InkWell(
-                onTap: () {
-                  return AlertDialog(
-                    content: Text("Page is under development"),
-                    actions: [
-                      FlatButton(
-                        textColor: Colors.blueAccent,
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('OKAY'),
-                      ),
-                    ],
-                  );
-                },
-                child: ListTile(
-                  title: Text("Settings"),
-                  leading: Icon(Icons.settings, color: Colors.blueAccent),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  return AlertDialog(
-                    content: Text("Page is under development"),
-                    actions: [
-                      FlatButton(
-                        textColor: Colors.blueAccent,
-                        onPressed: () => Navigator.pop(context),
-                        child: Text('OKAY'),
-                      ),
-                    ],
-                  );
-                },
-                child: ListTile(
-                  title: Text("About Us"),
-                  leading: Icon(
-                    Icons.help,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-              ),
             ],
           ),
         ),
-        // resizeToAvoidBottomPadding: false,
         body: ListView(
           children: [
             SizedBox(
