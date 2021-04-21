@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import '../home.dart';
 import 'timer.dart';
 
 class BaseApp extends StatefulWidget {
@@ -25,7 +26,8 @@ class _BaseAppState extends State<BaseApp> {
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Homepage()));
               },
             ),
           ),

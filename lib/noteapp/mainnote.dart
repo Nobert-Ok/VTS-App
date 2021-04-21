@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiver/iterables.dart';
 import 'package:voice_app/noteapp/screens/viewNote.dart';
+import '../home.dart';
 import 'screens/work.dart';
 import 'screens/personal.dart';
 import 'screens/school.dart';
@@ -75,7 +76,10 @@ class _NoteApp extends State<NoteApp> {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => Homepage()));
+            },
           ),
           backgroundColor: Colors.blue,
           elevation: 0.0,

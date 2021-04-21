@@ -2,6 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:voice_app/custompainter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:voice_app/model/todo.dart';
+import 'package:voice_app/noteapp/mainnote.dart';
+import 'package:voice_app/qrcode/main.dart';
+import 'package:voice_app/timer/main.dart';
+import 'package:voice_app/todo.dart';
 
 import 'login.dart';
 
@@ -115,7 +120,8 @@ class _HomepageState extends State<Homepage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/todo');
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Todolist()));
               },
               child: Center(
                 child: Padding(
@@ -192,7 +198,8 @@ class _HomepageState extends State<Homepage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/note');
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => NoteApp()));
               },
               child: Center(
                 child: Padding(
@@ -269,7 +276,8 @@ class _HomepageState extends State<Homepage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/qrcode');
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Qrcode()));
               },
               child: Center(
                 child: Padding(
@@ -346,7 +354,8 @@ class _HomepageState extends State<Homepage> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, '/timer');
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => BaseApp()));
               },
               child: Center(
                 child: Padding(

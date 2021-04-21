@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../home.dart';
 import 'generate.dart';
 import 'scan.dart';
 
@@ -12,6 +13,13 @@ class _HomeappState extends State<Homeapp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Homepage()));
+          },
+        ),
         title: Text("Scan Options"),
         centerTitle: true,
       ),

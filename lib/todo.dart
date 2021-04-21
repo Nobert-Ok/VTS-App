@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voice_app/home.dart';
 import 'package:voice_app/pages/add_event_page.dart';
 import 'package:voice_app/pages/add_task_page.dart';
 import 'package:voice_app/pages/event_page.dart';
@@ -75,7 +76,8 @@ class _TodolistState extends State<Todolist> {
             IconButton(
               icon: Icon(Icons.home),
               onPressed: () {
-                Navigator.pushNamed(context, '/home');
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Homepage()));
               },
             ),
             // IconButton(

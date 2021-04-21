@@ -182,7 +182,8 @@ class _SignupPageState extends State<SignupPage> {
       });
       // db.collection("users").document.set(userDataMap);
       displayToastMsg("User created", context);
-      Navigator.pushNamed(context, "/login");
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Login()));
     } else {
       displayToastMsg("User not created", context);
     }
